@@ -4,13 +4,15 @@ const List = (props) => {
   return (
     <div className="users">
       <p className="">List of added users:</p>
-      {users?.map((item, index) => {
-        return (
-          <div key={index} className="user">
-            <p className="info">{item.name} <span className="email">({item.email})</span></p>
-          </div>
-        )
-      })}
+      <ul className="">
+        {users?.map((item, index) => {
+          return (
+            <li key={index} className="user">
+              <p className="info">{item.name} <span className="email">({item.email})</span></p>
+            </li>
+          )
+        })}
+      </ul>
     </div>
   )
 }

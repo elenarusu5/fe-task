@@ -1,17 +1,12 @@
 const Form = (props) => {
-    const { formData, handleChange, handleSubmit } = props
-
-    // const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
-
-    const disableSave = !formData?.name?.length
-        || !formData?.email?.length
+    const { formData, errorMessage, isValidEmail, handleChange, handleSubmit } = props
 
     return (
         <form className='form'>
             <div className='field'>
-                <label htmlFor="name" className='label required'>Name</label><br />
+                <label htmlFor="name" className={`label required ${!formData.name.length ? 'error' : ''}`}>User Name</label><br />
                 <input
-                    className="form-control"
+                    className={`form-control ${!formData.name.length ? 'error' : ''}`}
                     type="text"
                     name="name"
                     placeholder="Name"
@@ -19,9 +14,9 @@ const Form = (props) => {
                     onChange={handleChange} />
             </div>
             <div className='field'>
-                <label htmlFor="email" className='label required'>Email</label><br />
+                <label htmlFor="email" className={`label required ${(!formData.email.length || !isValidEmail) ? 'error' : ''}`}>User Email</label><br />
                 <input
-                    className="form-control"
+                    className={`form-control ${(!formData.email.length || !isValidEmail) ? 'error' : ''}`}
                     type="email"
                     name="email"
                     placeholder="Email"
@@ -30,10 +25,10 @@ const Form = (props) => {
                 />
             </div>
             <div className="field-submit">
+                {!!errorMessage && <p>{errorMessage}</p>}
                 <button
-                    type="submit"
+                    type="button"
                     className="btn"
-                    disabled={disableSave}
                     onClick={handleSubmit}
                 >
                     Submit
