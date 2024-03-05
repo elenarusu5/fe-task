@@ -1,12 +1,21 @@
+import '@fortawesome/fontawesome-free/css/all.css'
+
 const Form = (props) => {
-    const { formData, errorMessage, isValidEmail, handleChange, handleSubmit } = props
+    const { formData, message, isValidEmail, handleChange, handleSubmit } = props
+
+    const errorClassName = !!message.error && !formData?.name?.length ? 'error' : ''
+    const errorClassEmail = !!message.error && (!formData?.email?.length || !isValidEmail) ? 'error' : ''
 
     return (
         <form className='form'>
+            <p className="title">Welcome!</p>
+            {!!message.error && <p className="error">{message.error}</p>}
+            {!!message.success && <p className="success">{message.success}</p>}
             <div className='field'>
-                <label htmlFor="name" className={`label required ${!formData.name.length ? 'error' : ''}`}>User Name</label><br />
+                <label htmlFor="name" className={`label required ${errorClassName}`}>User Name</label><br />
+                <i className="fa-regular fa-user" />
                 <input
-                    className={`form-control ${!formData.name.length ? 'error' : ''}`}
+                    className={`form-control ${errorClassName}`}
                     type="text"
                     name="name"
                     placeholder="Name"
@@ -14,9 +23,10 @@ const Form = (props) => {
                     onChange={handleChange} />
             </div>
             <div className='field'>
-                <label htmlFor="email" className={`label required ${(!formData.email.length || !isValidEmail) ? 'error' : ''}`}>User Email</label><br />
+                <label htmlFor="email" className={`label required ${errorClassEmail}`}>User Email</label><br />
+                <i className="fa-regular fa-envelope" />
                 <input
-                    className={`form-control ${(!formData.email.length || !isValidEmail) ? 'error' : ''}`}
+                    className={`form-control ${errorClassEmail}`}
                     type="email"
                     name="email"
                     placeholder="Email"
@@ -25,7 +35,6 @@ const Form = (props) => {
                 />
             </div>
             <div className="field-submit">
-                {!!errorMessage && <p>{errorMessage}</p>}
                 <button
                     type="button"
                     className="btn"

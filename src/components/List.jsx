@@ -3,12 +3,16 @@ const List = (props) => {
 
   return (
     <div className="users">
-      <p className="">List of added users:</p>
-      <ul className="">
-        {users?.map((item, index) => {
+      <p className="title">List of added users:</p>
+      <ul className="list">
+        {[...users]?.reverse()?.map((item, index) => {
           return (
-            <li key={index} className="user">
-              <p className="info">{item.name} <span className="email">({item.email})</span></p>
+            <li key={index}>
+              <p className="user">
+                <span className="name">{item.name}</span>&nbsp;
+                <span className="email"><a href={`mailto:${item.email}`}>{item.email}</a></span>&nbsp;
+                <span className="time">({new Date(item.created)?.toLocaleString()})</span>
+              </p>
             </li>
           )
         })}

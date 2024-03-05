@@ -3,15 +3,13 @@ import { useEffect, useState } from "react"
 import Form from "./Form"
 import List from "./List"
 
-const Main = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: ''
-    })
+import '../assets/styles/styles.scss'
 
-    const [errorMessage, setErrorMessage] = useState(null)
+const Main = () => {
+    const [formData, setFormData] = useState({ name: '', email: '' })
+    const [message, setMessage] = useState({ error: null, success: null })
     const [users, setUsers] = useState(() => {
-        return JSON.parse(localStorage.getItem('userData')) || []
+        return JSON.parse(localStorage?.getItem('userData')) || []
     })
 
     const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
@@ -32,33 +30,33 @@ const Main = () => {
 
     const handleSubmit = () => {
         if (!formData.name.length || !formData.email.length) {
-            setErrorMessage('Please fill in the required fields')
+            setMessage({ error: '*Please fill in the required fields!' })
         } else if (!isValidEmail) {
-            setErrorMessage('Please check the format of Email field')
+            setMessage({ error: '*Please check the format of Email field!' })
         } else {
             addUser({
                 name: formData.name,
                 email: formData.email,
-                created_at: Date.now()
+                created: Date.now()
             })
-            setFormData({
-                name: '',
-                email: ''
-            })
-            setErrorMessage(null)
+            setMessage({ success: 'User added to the system!' })
+            
+            setFormData({ name: '', email: '' })
+            setTimeout(() => setMessage({ success: null }), 3000)
         }
     }
-
     return (
         <div className="container">
             <Form
                 formData={formData}
                 handleChange={handleChange}
-                errorMessage={errorMessage}
+                message={message}
                 isValidEmail={isValidEmail}
                 handleSubmit={handleSubmit}
             />
-            <List users={users} />
+            {!!users?.length &&
+                <List users={users} />
+            }
         </div>
     )
 }
